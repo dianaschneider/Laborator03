@@ -13,14 +13,17 @@ import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class PhoneDialerActivity extends AppCompatActivity {
+    private ImageButton hangupButton;
 
-    /*TODO: made landscape layout but not working*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_dialer);
+        hangupButton = (ImageButton) findViewById(R.id.KEY_HANGUP);
+        hangupButton.setOnClickListener(hangupButtonClickListener);
     }
 
 
@@ -79,7 +82,6 @@ public class PhoneDialerActivity extends AppCompatActivity {
         }
     }
 
-    /*TODO: not calling*/
     public void onClickCallButton(View view) {
         if (ContextCompat.checkSelfPermission(PhoneDialerActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
@@ -92,10 +94,10 @@ public class PhoneDialerActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse("tel:" + dialedNumber.getText().toString()));
             startActivity(intent);
+            Log.d("CALL", "calling?");
         }
     }
 
-    /*TODO: implement hang up */
     private HangupButtonClickListener hangupButtonClickListener = new HangupButtonClickListener();
     private class HangupButtonClickListener implements View.OnClickListener {
         @Override
