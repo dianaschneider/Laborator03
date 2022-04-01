@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class PhoneDialerActivity extends AppCompatActivity {
     private ImageButton hangupButton;
@@ -99,6 +101,20 @@ public class PhoneDialerActivity extends AppCompatActivity {
     }
 
     private HangupButtonClickListener hangupButtonClickListener = new HangupButtonClickListener();
+
+    public void onClickContactsButton(View view) {
+        ImageButton contactsButton = (ImageButton) findViewById(R.id.KEY_CONTACTS);
+        EditText dialedNumber = (EditText) findViewById(R.id.dialedNumber);
+        String phoneNumber = dialedNumber.getText().toString();
+        if (phoneNumber.length() > 0) {
+            Intent intent = new Intent("ro.pub.cs.systems.eim.lab04.contactsmanager.intent.action.ContactsManagerActivity");
+            intent.putExtra("ro.pub.cs.systems.eim.lab04.contactsmanager.PHONE_NUMBER_KEY", phoneNumber);
+            startActivityForResult(intent, Constants.CONTACTS_MANAGER_REQUEST_CODE);
+        } else {
+            Toast.makeText(getApplication(), getResources().getString(R.string.phone_error), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private class HangupButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
